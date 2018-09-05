@@ -1,0 +1,61 @@
+;monta o valor inteiro em r18(high) e r17(low)
+
+lds 
+lds r16, temp_l
+
+;monta o valor inteiro em r18 e r17
+;monta os 12 bits da temperatura em r17 e r18
+lds r16, temp_h
+lsr r16
+lsr r16
+lsr r16
+mov r17, r16;byte mais significativo da temperatura em r17
+lds r16, temp_l
+lsr r16
+lsr r16
+lsr r16
+mov r18, r16
+lds r16, temp_h
+bst r16, 0
+bld r18, 5
+bst r16, 1
+bld r18, 6
+bst r16, 2
+bld r18, 7;byte menos significativo da temperatura em r18
+;word r17 r18 tem a temperatura
+
+;mostra logo 0 em milhar
+;ldi r19, NUM0
+;sts dp_m, r19
+;mostra centena
+;clr r20;vai ser usado para somar carry
+;mov r19, r17;byte mais significativo de temp_h
+;andi r19, 0x0f;filtra nibble menos significativo
+;rol r19;multiplica por 2 para apontar o byte correto em tabela de word
+;ldi ZH, high(hex2seg<<1)
+;ldi ZL, low(hex2seg<<1)
+;add ZL, r19;soma normal no Z low
+;adc ZH, r20;transporta o carry para o Z high 
+;lpm r19, Z;le o valor do display
+;sts dp_c, r19
+;mostra dezena
+;mov r19, r18
+;swap r19
+;andi r19, 0x0f
+;rol r19;multiplica por 2 para apontar o byte correto em tabela de word
+;ldi ZH, high(hex2seg<<1)
+;ldi ZL, low(hex2seg<<1)
+;add ZL, r19
+;adc ZH, r20
+;lpm r19, Z
+;sts dp_d, r19
+;mostra unidade
+;mov r19, r18
+;andi r19, 0x0f
+;rol r19;multiplica por 2 para apontar o byte correto em tabela de word
+;ldi ZH, high(hex2seg<<1)
+;ldi ZL, low(hex2seg<<1)
+;add ZL, r19
+;adc ZH, r20
+;lpm r19, Z
+;sts dp_u, r19
